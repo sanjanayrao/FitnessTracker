@@ -44,7 +44,6 @@ export default class Profile extends Component {
       });
      
       data = await res.json();
-      console.log(data)
       this.setState({
         firstName: data["firstName"], 
         lastName: data["lastName"], 
