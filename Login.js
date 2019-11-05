@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, TouchableWithoutFeedback, TextInput, StyleSheet, Dimensions } from 'react-native';
 import Button from './Button';
+import base64 from 'base-64';
 
 class Login extends React.Component {
   constructor(props) {
@@ -8,12 +9,34 @@ class Login extends React.Component {
     this.state = {
       username: '',
       password: '',
-      error: ''
+      error: '',
+      token: ''
     };
   }
 
-  sendRequest(){
+  async sendRequest(){
+   let msg = await fetch('https://mysqlcs639.cs.wisc.edu/login', {
+      method: 'GET',
+      headers: {
+        'Accept' : 'application/json',
+        'Content-Type' : 'application/json',
+        'Authorization' : 'Basic ' + base64.encode(this.state.username + ':' +  this.state.password)
+       }
+      });
     
+      data = await msg.json();
+
+      //collect error message
+      err = Object.values(data);
+      err = err[0];
+     
+    
+    if( msg.ok){
+      this.setState({token: data["token"]}, ()=>{this.props.auth(data["token"], this.state.username)});
+      this.setState({error: '' });
+    }else{
+      this.setState({error: err });
+    }
   }
 
   render() {
@@ -26,19 +49,27 @@ class Login extends React.Component {
             <View style={{width: screenWidth, height: screenHeight, backgroundColor: 'black', opacity: 0.75}}>
             </View>
           </TouchableWithoutFeedback>
-          <View style={{position: 'absolute', width: this.props.width, height: this.props.height, left: (screenWidth - this.props.width)/2, top: (screenHeight - this.props.height)/2, backgroundColor: 'white', borderRadius: 10}}>
+          <View style={{position: 'absolute', width: this.props.width, height: this.props.height * 0.75, left: (screenWidth - this.props.width)/2, top: (screenHeight - this.props.height)/2, backgroundColor: 'white', borderRadius: 10}}>
             <Text style={{fontSize: 25, marginLeft: 20, marginTop: 15}}>Log In</Text>
             <Button buttonStyle={styles.XButton} textStyle={{fontSize: 25}} text={'✕'} onPress={() => this.props.hide()}/>
-            <TextInput style={styles.textInput, {width: (this.props.width/2)}}
-               placeholder="Enter a Username"
-               onChangeText={(username) => this.setState({username})}
-               value={this.state.username}/>
+            <View style={styles.inputFields}>
+              <View style={styles.userField} > 
                 <TextInput style={styles.textInput, {width: (this.props.width/2)}}
-               placeholder="Enter a Password"
-               onChangeText={(password) => this.setState({password})}
-               value={this.state.password}/>
-               <Button style={styles.signUpButton} onPress={this.props.switch} text={'No account yet? Tap here to create one!'}/>
-               <Button style={styles.enterButton} onPress={this.sendRequest} text={'Log In'} />
+                  placeholder="       Enter a Username"
+                  onChangeText={(username) => this.setState({username})}
+                  value={this.state.username}/>
+              </View>
+              <View style={styles.passField}>
+                <TextInput secureTextEntry={true} style={styles.textInput, {width: (this.props.width/2)}}
+                  placeholder="       Enter a Password"
+                  onChangeText={(password) => this.setState({password})}
+                  value={this.state.password}/>
+              </View>
+            </View>
+             
+               <Text style={styles.error}> {this.state.error}</Text>
+               <Button textStyle={{color: 'white'}} buttonStyle={styles.enterButton} onPress={()=>{this.sendRequest()}} text={'Log In'} />
+               <Button textStyle={{color: 'white'}} buttonStyle={styles.signUpButton} onPress={this.props.switch} text={'No account? Create one now!'}/>
           </View>
         </View>
       )
@@ -46,15 +77,18 @@ class Login extends React.Component {
     return (<View></View>)
   }
 }
-const error = 'Username or Password is incorrect!';
+
 const styles = StyleSheet.create({
   textInput:{
     height: 40,
-    position: 'absolute',
     alignSelf: 'center',
-    justifyContent: 'center',
-    marginLeft: 20, 
-    marginTop: 80
+    justifyContent: 'center'
+  },
+  userField:{
+    margin: 10
+  },
+  passField:{
+    margin: 10
   },
   XButton:{
     alignItems: 'center', 
@@ -65,11 +99,36 @@ const styles = StyleSheet.create({
     right: 0
   },
   signUpButton:{
-    position: 'absolute',
-    alignContent: 'center'
+    backgroundColor: '#553555', 
+    padding: 10, 
+    borderRadius: 10,
+    height: 60,
+    width: 175,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    margin: 10
+
   },
   enterButton:{
+    backgroundColor: '#9FC9AE', 
+    padding: 10, 
+    borderRadius: 10,
+    height: 60,
+    width: 175,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    margin: 10
 
-  }
+  },
+  error: {
+    color: 'red',
+    alignSelf: 'center'
+  },
+  inputFields:{
+    marginTop: 70,
+    alignItems: 'center',
+    }
 });
 export default Login;

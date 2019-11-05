@@ -5,14 +5,23 @@ import Signup from './Signup';
 import Button from './Button';
 
 
-class App extends React.Component {
+class Homescreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       showLogin: false,
-      showSignup: false
+      showSignup: false,
     }
   }
+
+   login = (token, user) => {
+      this.props.navigation.navigate('Profile', [token, user]);
+
+  }
+   createUser = (token, user) => {
+       this.props.navigation.navigate('Profile', [token, user]);
+   }
+   
 
   render() {
     return (
@@ -22,11 +31,13 @@ class App extends React.Component {
           <Button buttonStyle={styles.loginButton} textStyle={{color: 'white'}} text={'Log In'} onPress={() => this.showLogin()}/>
           <Button buttonStyle={styles.signUpButton} textStyle={{color: 'white'}} text={'Sign Up'} onPress={() => this.showSignup()}/>
         </View>
-        <Login switch={()=>{this.showSignup()}}width={300} height={600} show={this.state.showLogin} hide={() => this.hideLogin()}/>
-        <Signup switch={()=>{this.showLogin()}} width={300} height={600} show={this.state.showSignup} hide={() => this.hideSignup()}/>
+        <Login auth={this.login} switch={()=>{this.showSignup()}} width={300} height={600} show={this.state.showLogin} hide={() => this.hideLogin()}/>
+        <Signup auth={this.createUser} switch={()=>{this.showLogin()}} width={300} height={600} show={this.state.showSignup} hide={() => this.hideSignup()}/>
       </View>
     );
   }
+
+
 
   showLogin() {
     this.setState({showLogin: true, showSignup: false});
@@ -43,42 +54,46 @@ class App extends React.Component {
 
 }
 
-
 const styles = StyleSheet.create({
   title: {
-    flex: 1,
-    fontSize: 78,
+    flex: 3,
+    fontSize: 85,
     fontWeight:'bold',
-    color: '#4B6962',
-    alignItems: 'center'
-    
+    color: '#070707',
+    alignSelf: 'center',
+    marginTop: 150   
   },
   initScreen: {
-    backgroundColor:'#F4F7F5', 
+    backgroundColor:'#F1F2EE', 
     flex:1,
     flexDirection: 'column'
   },
   buttonGroup:{
-    flex: 3,
+    flex: 5,
     alignItems: 'center',
     height: 150,
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   loginButton: {
-    backgroundColor: '#E07B49', 
-    padding: 10, 
-    borderRadius: 10,
-    height: 60,
-    width: 175
-  },
-  signUpButton: {
-    backgroundColor: '#64AC93', 
+    backgroundColor: '#9FC9AE', 
     padding: 10, 
     borderRadius: 10,
     height: 60,
     width: 175,
- 
+    margin: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  signUpButton: {
+    backgroundColor: '#553555', 
+    padding: 10, 
+    borderRadius: 10,
+    height: 60,
+    width: 175,
+    margin: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
  
 });
-export default App;
+export default Homescreen;
