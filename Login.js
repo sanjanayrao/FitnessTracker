@@ -7,8 +7,8 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: '',
+      username: 'Sanjj',
+      password: 'pass1',
       error: '',
       token: ''
     };
@@ -29,7 +29,7 @@ class Login extends React.Component {
       //collect error message
       err = Object.values(data);
       err = err[0];
-     
+     //console.log(data)
     
     if( msg.ok){
       this.setState({token: data["token"]}, ()=>{this.props.auth(data["token"], this.state.username)});
@@ -49,19 +49,21 @@ class Login extends React.Component {
             <View style={{width: screenWidth, height: screenHeight, backgroundColor: 'black', opacity: 0.75}}>
             </View>
           </TouchableWithoutFeedback>
-          <View style={{position: 'absolute', width: this.props.width, height: this.props.height * 0.75, left: (screenWidth - this.props.width)/2, top: (screenHeight - this.props.height)/2, backgroundColor: 'white', borderRadius: 10}}>
+          <View style={{position: 'absolute', width: this.props.width, height: this.props.height * 0.75, left: (screenWidth - this.props.width)/2, top: (screenHeight - this.props.height + 100)/2, backgroundColor: 'white', borderRadius: 10}}>
             <Text style={{fontSize: 25, marginLeft: 20, marginTop: 15}}>Log In</Text>
             <Button buttonStyle={styles.XButton} textStyle={{fontSize: 25}} text={'✕'} onPress={() => this.props.hide()}/>
             <View style={styles.inputFields}>
               <View style={styles.userField} > 
                 <TextInput style={styles.textInput, {width: (this.props.width/2)}}
-                  placeholder="       Enter a Username"
+                  placeholder="Enter a Username"
+                  textAlign={'center'}
                   onChangeText={(username) => this.setState({username})}
                   value={this.state.username}/>
               </View>
               <View style={styles.passField}>
                 <TextInput secureTextEntry={true} style={styles.textInput, {width: (this.props.width/2)}}
-                  placeholder="       Enter a Password"
+                  placeholder="Enter a Password"
+                  textAlign={'center'}
                   onChangeText={(password) => this.setState({password})}
                   value={this.state.password}/>
               </View>

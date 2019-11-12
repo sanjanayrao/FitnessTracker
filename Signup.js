@@ -3,7 +3,6 @@ import { Text, View, TouchableWithoutFeedback, Dimensions, TextInput, StyleSheet
 import Button from './Button';
 import base64 from 'base-64';
 
-
 class Signup extends React.Component {
   constructor(props) {
     super(props);
@@ -16,9 +15,7 @@ class Signup extends React.Component {
 
   async createAccount(){
     if(this.state.username && this.state.password){
-
-    
-    let msg = await fetch('https://mysqlcs639.cs.wisc.edu/users', {
+     let msg = await fetch('https://mysqlcs639.cs.wisc.edu/users', {
       method: 'POST',
       headers: {
         'Accept' : 'application/json',
@@ -28,25 +25,25 @@ class Signup extends React.Component {
        username: this.state.username,
        password: this.state.password
        })
-      }).then(
-        fetch('https://mysqlcs639.cs.wisc.edu/login', {
+      });
+      
+      data = await msg.json();
+      //collect error message
+      err = Object.values(data);
+      err = err[0];
+
+      if(msg.ok){
+        let data = await fetch('https://mysqlcs639.cs.wisc.edu/login', {
            method: 'GET',
            headers: {
             'Accept' : 'application/json',
             'Content-Type' : 'application/json',
-            'Authorization' : 'Basic' + base64.encode(this.state.username + ':' +  this.state.password)
-            }
-      }));
-      
-      data = await msg.json();
+            'Authorization' : 'Basic ' + base64.encode(this.state.username + ':' +  this.state.password)
+            }});
 
-      //collect error message
-      err = Object.values(data);
-      err = err[0];
-     
-    
-      if( msg.ok){
-        this.setState({token: data["token"]}, ()=>{this.props.auth(data["token"], this.state.username)});
+        data = await data.json();
+       this.setState({token: data["token"]}, ()=>{this.props.auth(data["token"], this.state.username)});
+
         this.setState({error: '' });
       }else{
         this.setState({error: err });
@@ -70,19 +67,22 @@ class Signup extends React.Component {
             </View>
           </TouchableWithoutFeedback>
           
-          <View style={{position: 'absolute', width: this.props.width, height: this.props.height * 0.75, left: (screenWidth - this.props.width)/2, top: (screenHeight - this.props.height)/2, backgroundColor: 'white', borderRadius: 10}}>
+          <View style={{position: 'absolute', width: this.props.width, height: this.props.height * 0.75, left: (screenWidth - this.props.width)/2, top: (screenHeight - this.props.height + 100)/2, backgroundColor: 'white', borderRadius: 10}}>
             <Text style={{fontSize: 25, marginLeft: 20, marginTop: 15}}>Sign Up</Text>
             <Button buttonStyle={styles.XButton} textStyle={{fontSize: 25}} text={'✕'} onPress={() => this.props.hide()}/>
             <View style={styles.inputFields}> 
               <View style={styles.userField}>
                 <TextInput style={styles.textInput, {width: (this.props.width/2)}}
-                  placeholder="       Enter a Username"  
+                  placeholder="Enter a Username"  
+                  textAlign={'center'}
                   onChangeText={(username) => this.setState({username})}
                   value={this.state.username}/>
+                  
               </View>
               <View style={styles.passField}>
                 <TextInput secureTextEntry={true}  style={styles.textInput, {width: (this.props.width/2)}}
-                  placeholder="       Enter a Password" 
+                  placeholder="Enter a Password" 
+                  textAlign={'center'}
                   onChangeText={(password) => this.setState({password})}
                   value={this.state.password}/>
               </View>

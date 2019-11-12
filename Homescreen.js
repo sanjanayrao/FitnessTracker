@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, AsyncStorage } from 'react-native';
 import Login from './Login';
 import Signup from './Signup';
 import Button from './Button';
-
 
 class Homescreen extends React.Component {
   constructor(props) {
@@ -13,13 +12,22 @@ class Homescreen extends React.Component {
       showSignup: false,
     }
   }
+  async _storeData(token, user){
+    try{
+     var sentToken = await AsyncStorage.setItem('token', JSON.stringify(token));
+     var sentUser = await AsyncStorage.setItem('user', JSON.stringify(user));
+    }catch(e){}
+  }
 
    login = (token, user) => {
-      this.props.navigation.navigate('Profile', [token, user]);
-
+     this._storeData(token, user);
+     this.props.navigation.navigate('Profile', {'token': token, 'user': user});
+    
   }
    createUser = (token, user) => {
-       this.props.navigation.navigate('Profile', [token, user]);
+       this._storeData(token, user);
+       this.props.navigation.navigate('Profile', {'token': token, 'user': user});
+
    }
    
 
