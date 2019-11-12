@@ -4,7 +4,7 @@ import {Body, Container, Header, Title, View, Text, Card, CardItem} from "native
 import Button from './Button';
 import AddMeal from './AddActivity';
 import EditMeal from './EditActivity';
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
 import AddActivity from "./AddActivity";
 import EditActivity from "./EditActivity";
 
@@ -143,13 +143,43 @@ export default class Activities extends Component {
     this.focusListener.remove();
   }
  
-
+  toolTip(){
+    if(!this.state.showEdit && !this.state.showAdd && this.state.activities){
+      return <View style={styles.hint}>
+      <Text   style={{color: '#9aa195', fontSize: 12}}> Swipe to remove, press and hold to edit </Text>
+    </View>;
+    }
+  }
   shouldRender(index) {
     return this.state.closedIndices.indexOf(index) === -1 && !this.state.showEdit && !this.state.showAdd;
   }
 
   handleCardPress(id){
     this.setState({currentEdit: id}, ()=>{this.showEdit()});
+  }
+
+  showCardView(){
+    if(!this.state.showEdit && !this.state.showAdd){
+      return <ScrollView>
+      {this.state.activities.map((act, i) => this.shouldRender(i) &&
+        <TouchableOpacity key={i} ><View key={i}><SwipeableCard id={act["id"]} edit={(id)=>{this.handleCardPress(id)}}  
+        header={act["name"]} 
+        body={act["duration"] + ' minutes, ' + act["calories"] + ' calories'} 
+              onDismiss={() => {
+
+          if ([...new Array(this.state.activities.length)].slice(i + 1, this.state.activities.length).some(this.shouldRender)) {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring); 
+          }
+
+          this.deleteAct(act["id"]);
+          
+          this.setState({
+            closedIndices: [...this.state.closedIndices, i]
+          })
+        }}
+        />
+          </View></TouchableOpacity>)}</ScrollView>;
+    }
   }
   render() {
     return (
@@ -158,24 +188,8 @@ export default class Activities extends Component {
         <Button onPress={()=> this.showAdd()} buttonStyle={styles.add} textStyle={{color: 'white'}} text={'Add'}/>
         <AddActivity update={()=>{this.fetchTodayActivities()}} width={300} height={600} show={this.state.showAdd} hide={()=>{this.hideAdd()}} token={this.state.token}/>
         <EditActivity update={()=>{this.fetchTodayActivities()}} width={300} height={600} show={this.state.showEdit} hide={()=>{this.hideEdit()}} token={this.state.token} id={this.state.currentEdit}/>
-        {this.state.activities.map((act, i) => this.shouldRender(i) &&
-          <TouchableOpacity key={i} ><View key={i}><SwipeableCard id={act["id"]} edit={(id)=>{this.handleCardPress(id)}}  
-          header={act["name"]} 
-          body={act["duration"] + ' minutes, ' + act["calories"] + ' calories'} 
-                onDismiss={() => {
-
-            if ([...new Array(this.state.activities.length)].slice(i + 1, this.state.activities.length).some(this.shouldRender)) {
-              LayoutAnimation.configureNext(LayoutAnimation.Presets.spring); 
-            }
-
-            this.deleteAct(act["id"]);
-            
-            this.setState({
-              closedIndices: [...this.state.closedIndices, i]
-            })
-          }}
-          />
-            </View></TouchableOpacity>)}
+            {this.showCardView()}      
+            {this.toolTip() }
       </Container>
     );
   }
@@ -183,16 +197,15 @@ export default class Activities extends Component {
 
 var styles = StyleSheet.create({
   head:{
-    marginTop: 50,
+    marginTop: 60,
     fontSize: 40,
     alignSelf: 'center'
   },
   container: {
     height: '100%',
     backgroundColor: '#ecf0f1',
-    padding: 8,
-    marginTop: 10
-  },
+    padding: 8
+    },
   paragraph: {
     fontSize: 12,
     paddingBottom: 5,
@@ -220,5 +233,11 @@ var styles = StyleSheet.create({
     margin:10,
     justifyContent: 'center',
     alignContent: 'center'
+  },
+  hint:{
+    flex: 1,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'flex-end'    
   }
 });
