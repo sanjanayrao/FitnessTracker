@@ -27,6 +27,14 @@ export default class EditActivity extends React.Component{
 
       
      async updateDB(){
+      if(typeof this.state.date == 'string'){
+        let month = this.state.date.substring(0,2);
+        let day = this.state.date.substring(3, 5);
+        let year = this.state.date.substring(6, 10);
+        var formDate = new Date(year, month-1, day);
+      }else{
+       var formDate = new Date(this.state.date);
+      }
             let data = await fetch('https://mysqlcs639.cs.wisc.edu/activities/' + this.props.id, {
             method: 'PUT',
             headers: {
@@ -38,11 +46,11 @@ export default class EditActivity extends React.Component{
                 'name' : this.state.name,
                 'duration' : this.state.duration,
                 'calories' : this.state.calories,
-                'date' : this.state.date,
+                'date' : formDate,
             })
         }).then(this.props.update).then(this.props.hide).then(()=>{this.setState(this.initialState)});
         
-      }
+     }
 
       handleClose(){
         this.setState(this.initial);
@@ -79,7 +87,7 @@ export default class EditActivity extends React.Component{
                             date={this.state.date} //initial date from state
                             mode="datetime" //The enum of date, datetime and time
                             placeholder="select date"
-                            format="DD-MM-YYYY"
+                            format="MM-DD-YYYY"
                             minDate="01-01-2000"
                             maxDate="01-01-2059"
                             confirmBtnText="Confirm"
@@ -96,7 +104,7 @@ export default class EditActivity extends React.Component{
                                 },
                             }}
                             onDateChange={date => {
-                                this.setState({ date: date });
+                               this.setState({date});
                             }}/>
                   </View>
                   <View style={styles.textEntry}>

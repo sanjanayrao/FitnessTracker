@@ -10,7 +10,7 @@ import {
   TouchableWithoutFeedback
 } from 'react-native';
 import Button from './Button';
-import DatePicker from 'react-native-datepicker'
+import DatePicker from 'react-native-datepicker';
 
 
 export default class AddActivity extends React.Component{
@@ -20,12 +20,28 @@ export default class AddActivity extends React.Component{
             name : '',
             duration : '',
             calories : '',
-            date : new Date()
+            date : new Date(),
+            time : new Date()
         }
         this.initial=this.state;
       }
 
      async updateDB(){
+       if(typeof this.state.date == 'string'){
+         let month = this.state.date.substring(0,2);
+         let day = this.state.date.substring(3, 5);
+         let year = this.state.date.substring(6, 10);
+         var formDate = new Date(year, month-1, day);
+       }else{
+        var formDate = new Date(this.state.date);
+       }
+       if(typeof this.state.time == 'string'){
+        let hours = this.state.time.substring(0,2);
+        let minutes = this.state.time.substring(3, 5);
+        formDate.setHours(hours);
+        formDate.setMinutes(minutes);
+       }
+
         if(this.state.name && this.state.duration && this.state.calories){
             let data = await fetch('https://mysqlcs639.cs.wisc.edu/activities/', {
             method: 'POST',
@@ -38,7 +54,7 @@ export default class AddActivity extends React.Component{
                 'name' : this.state.name,
                 'duration' : this.state.duration,
                 'calories' : this.state.calories,
-                'date' : this.state.date,
+                'date' : formDate,
             })
         }).then(this.props.update).then(this.props.hide).then(()=>{this.setState(this.initial)});
         }
@@ -50,6 +66,7 @@ export default class AddActivity extends React.Component{
       }
       render() {
         if(this.props.show) {
+
           const screenW = Math.round(Dimensions.get('window').width);
           const screenH = Math.round(Dimensions.get('window').height);
       
@@ -74,12 +91,14 @@ export default class AddActivity extends React.Component{
                     <TextInput placeholder="Calories" textAlign={'center'} value={this.state.calories} style={styles.textInput} onChangeText={(calories) => this.setState({calories})} />
                   </View>
                   <View style={styles.date}>
+
                       <DatePicker  style={{ width: 200 }}
                             date={this.state.date} //initial date from state
-                            mode="datetime" //The enum of date, datetime and time
-                            backgroundColor= 'black'
+                            mode="date" //The enum of date, datetime and time
                             placeholder="select date"
-                            format="YYYY-MM-DD"
+                            format="MM-DD-YYYY"
+                            minDate="01-01-2000"
+                            maxDate="01-01-2059"
                             confirmBtnText="Confirm"
                             cancelBtnText="Cancel"
                             customStyles={{
@@ -94,8 +113,31 @@ export default class AddActivity extends React.Component{
                                 },
                             }}
                             onDateChange={date => {
-                                this.setState({ date: date });
+                               this.setState({date});
                             }}/>
+                            <DatePicker  style={{ width: 200 }}
+                            date={this.state.time} //initial date from state
+                            mode="time" //The enum of date, datetime and time
+                            placeholder="select time"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                                dateIcon: {
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                marginLeft: 0,
+                                },
+                                dateInput: {
+                                marginLeft: 36,
+                                },
+                            }}
+                            onDateChange={time => {
+                               this.setState({time});
+                            }}/>
+                  </View>
+                  <View>
+
                   </View>
                   <View style={styles.textEntry}>
                      <Button onPress={()=>{this.updateDB()}} textStyle={{color: 'white'}} buttonStyle={styles.update} text={'Add Activity!'}/>

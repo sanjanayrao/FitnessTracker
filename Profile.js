@@ -81,6 +81,7 @@ export default class Profile extends Component {
 
   isToday = (someDate) => {
     const today = new Date()
+    someDate = new Date(someDate)
     return someDate.getDate() == today.getDate() &&
       someDate.getMonth() == today.getMonth() &&
       someDate.getFullYear() == today.getFullYear()

@@ -82,8 +82,8 @@ export default class Activities extends Component {
         'Content-Type' : 'application/json',
         'x-access-token' : this.state.token
       }
-      });
-      msg = await msg.json();
+      }).then(()=>{this.fetchTodayActivities()})
+      
   }
 
   async fetchTodayActivities(){
@@ -104,11 +104,15 @@ export default class Activities extends Component {
         }
     }
     this.setState({activities: update});
-
+    if(this.state.activities.length === 0){
+      this.state.closedIndices = [];
+    }
+   
   }
 
   isToday = (someDate) => {
     const today = new Date()
+    someDate = new Date(someDate);
     return someDate.getDate() == today.getDate() &&
       someDate.getMonth() == today.getMonth() &&
       someDate.getFullYear() == today.getFullYear()
@@ -139,6 +143,7 @@ export default class Activities extends Component {
       this._getData().then(()=>{this.fetchTodayActivities()});
     });
   }
+  
   componentWillUnmount(){
     this.focusListener.remove();
   }
@@ -160,6 +165,7 @@ export default class Activities extends Component {
 
   showCardView(){
     if(!this.state.showEdit && !this.state.showAdd){
+
       return <ScrollView>
       {this.state.activities.map((act, i) => this.shouldRender(i) &&
         <TouchableOpacity key={i} ><View key={i}><SwipeableCard id={act["id"]} edit={(id)=>{this.handleCardPress(id)}}  
