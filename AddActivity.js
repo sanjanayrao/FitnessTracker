@@ -136,9 +136,7 @@ export default class AddActivity extends React.Component{
                                this.setState({time});
                             }}/>
                   </View>
-                  <View>
-
-                  </View>
+                  
                   <View style={styles.textEntry}>
                      <Button onPress={()=>{this.updateDB()}} textStyle={{color: 'white'}} buttonStyle={styles.update} text={'Add Activity!'}/>
                   </View>
@@ -155,13 +153,13 @@ export default class AddActivity extends React.Component{
 
 const styles = StyleSheet.create({
   date: {
-    margin: 20,
     marginLeft: 34,
-    marginTop: 50
+    marginTop: 40
   },
   textFields:{
     marginTop: 35,
-    alignContent: 'center'
+    alignContent: 'center',
+    marginBottom: 10
   },
   textEntry:{
     margin:20
@@ -188,7 +186,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 60,
     width: 175,
-    margin: 10,
     alignItems: 'center',
     justifyContent: 'center',
     alignContent: 'center',

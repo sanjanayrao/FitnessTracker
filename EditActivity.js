@@ -20,7 +20,8 @@ export default class EditActivity extends React.Component{
           name : undefined,
           duration : undefined,
           calories : undefined,
-          date : new Date()
+          date : new Date(),
+          time: new Date(),
         }
         this.initialState= this.state;
       }
@@ -35,6 +36,12 @@ export default class EditActivity extends React.Component{
       }else{
        var formDate = new Date(this.state.date);
       }
+      if(typeof this.state.time == 'string'){
+        let hours = this.state.time.substring(0,2);
+        let minutes = this.state.time.substring(3, 5);
+        formDate.setHours(hours);
+        formDate.setMinutes(minutes);
+       }
             let data = await fetch('https://mysqlcs639.cs.wisc.edu/activities/' + this.props.id, {
             method: 'PUT',
             headers: {
@@ -106,6 +113,26 @@ export default class EditActivity extends React.Component{
                             onDateChange={date => {
                                this.setState({date});
                             }}/>
+                             <DatePicker  style={{ width: 200 }}
+                            date={this.state.time} //initial date from state
+                            mode="time" //The enum of date, datetime and time
+                            placeholder="select time"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                                dateIcon: {
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                marginLeft: 0,
+                                },
+                                dateInput: {
+                                marginLeft: 36,
+                                },
+                            }}
+                            onDateChange={time => {
+                               this.setState({time});
+                            }}/>
                   </View>
                   <View style={styles.textEntry}>
                      <Button onPress={()=>{this.updateDB()}} textStyle={{color: 'white'}} buttonStyle={styles.update} text={'Edit Activity!'}/>
@@ -124,9 +151,8 @@ export default class EditActivity extends React.Component{
 
 const styles = StyleSheet.create({
   date: {
-    margin: 20,
     marginLeft: 34,
-    marginTop: 30
+    marginTop: 40
   },
   textFields:{
     marginTop: 35,
@@ -157,7 +183,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 60,
     width: 175,
-    margin: 10,
     alignItems: 'center',
     justifyContent: 'center',
     alignContent: 'center',

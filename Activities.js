@@ -59,7 +59,6 @@ export class SwipeableCard extends Component {
 
 
 export default class Activities extends Component {
-  titles = new Array(5).fill(null).map((_, i) => `Card #${i}`);
   state = {
     closedIndices: [],
     activities: [],
@@ -74,7 +73,7 @@ export default class Activities extends Component {
     this.shouldRender = this.shouldRender.bind(this);
   }
 
-  async deleteAct(id){
+  async deleteAct(id, i){
     let msg = await fetch('https://mysqlcs639.cs.wisc.edu/activities/' + id, {
       method: 'DELETE',
       headers: {
@@ -82,11 +81,12 @@ export default class Activities extends Component {
         'Content-Type' : 'application/json',
         'x-access-token' : this.state.token
       }
-      }).then(()=>{this.fetchTodayActivities()})
-      
+      });
+        
   }
 
   async fetchTodayActivities(){
+    this.setState({closedIndices: []});
     let msg = await fetch('https://mysqlcs639.cs.wisc.edu/activities', {
       method: 'GET',
       headers: {
@@ -104,9 +104,7 @@ export default class Activities extends Component {
         }
     }
     this.setState({activities: update});
-    if(this.state.activities.length === 0){
-      this.state.closedIndices = [];
-    }
+  
    
   }
 
@@ -177,7 +175,7 @@ export default class Activities extends Component {
             LayoutAnimation.configureNext(LayoutAnimation.Presets.spring); 
           }
 
-          this.deleteAct(act["id"]);
+          this.deleteAct(act["id"], i);
           
           this.setState({
             closedIndices: [...this.state.closedIndices, i]
