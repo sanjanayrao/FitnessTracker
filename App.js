@@ -7,18 +7,23 @@ import Profile from './Profile';
 import Settings from './Settings';
 import Activities from './Activities';
 import Meals from './Meals';
-
+import AddMeal from './AddMeal';
+import AddFoods from './AddFoods';
+import WeekView from './WeekView';
+import EditFoods from './EditFoods';
+import EditMeal from './EditMeal';
 
 
  export const TabNav = createBottomTabNavigator({
   Profile:  Profile ,
   Activities: Activities,
   Meals : Meals,
-  Settings : Settings
+  Week: WeekView,
+  Settings : Settings,
   },{
     initialRouteName: 'Profile'
   },{
-    order: ['Profile', 'Activities', 'Meals', 'Settings']
+    order: ['Profile', 'Activities', 'Meals', 'Week', 'Settings']
   }
   
 );
@@ -27,6 +32,11 @@ import Meals from './Meals';
 export const AppNavigator = createStackNavigator({
   Home: {screen: Homescreen},
   Settings : {screen: Settings},
+  Meals : {screen: Meals},
+  AddMeal : {screen: AddMeal},
+  AddFoods : {screen: AddFoods},
+  EditMeal: {screen: EditMeal},
+  EditFoods: {screen: EditFoods},
   TabNavigator: TabNav
 },{
   headerMode: "none"

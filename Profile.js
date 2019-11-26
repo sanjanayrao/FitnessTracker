@@ -154,6 +154,7 @@ export default class Profile extends Component {
           goalDailyFat : data["goalDailyFat"],
           goalDailyProtein : data["goalDailyProtein"]
         });
+
         
 
   }
@@ -189,9 +190,14 @@ export default class Profile extends Component {
           <View style={styles.header}></View>
           <Image style={styles.avatar} source={require('./assets/octo.png')}/>
             <View >
+              <View accessible={true}>
               <Text style={styles.message}>{this.state.message}, {"\n"} {this.state.username}!</Text>
+              </View>
               <View style={styles.dataTable}>
-                <Text style={styles.dashTitle}>{this.getDashName()}</Text>
+                <View accessible={true} >
+                <Text style={styles.dashTitle} >{this.getDashName()}</Text>
+                </View>
+                <View accessible={true}>
                 <DataTable>
                   <DataTable.Header>
                     <DataTable.Title>Goal Name</DataTable.Title>
@@ -220,8 +226,10 @@ export default class Profile extends Component {
                   </DataTable.Row>
 
                 </DataTable>
+                </View>
+                <View accessible={true}>
                 <Button style={styles.editButton} title={'edit goals'} onPress={()=>this.showEdit()}/>
-
+                </View>
               </View>
 
 
