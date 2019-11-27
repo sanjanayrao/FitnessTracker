@@ -1,9 +1,7 @@
 import React, {Component} from "react";
 import {LayoutAnimation, UIManager, Animated, PanResponder, Dimensions, StyleSheet, AsyncStorage} from 'react-native';
-import {Body, Container, Header, Title, View, Text, Card, CardItem} from "native-base";
+import {Body, Container, View, Text, Card, CardItem} from "native-base";
 import Button from './Button';
-import AddMeal from './AddActivity';
-import EditMeal from './EditActivity';
 import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
 import AddActivity from "./AddActivity";
 import EditActivity from "./EditActivity";

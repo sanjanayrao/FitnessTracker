@@ -4,10 +4,7 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity,
-  TextInput,
-  Button,
-  AsyncStorage
+  Button
 } from 'react-native';
 import EditInfo from './EditInfo';
 import { DataTable } from 'react-native-paper';

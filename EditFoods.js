@@ -1,15 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableOpacity,
-  TextInput,
   Dimensions,
-  TouchableWithoutFeedback,
   Picker,
-  PickerItem
 } from 'react-native';
 import Button from './Button';
 import { ScrollView } from 'react-native-gesture-handler';
