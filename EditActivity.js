@@ -77,7 +77,7 @@ export default class EditActivity extends React.Component{
               </TouchableWithoutFeedback>
               
               <View style={{position: 'absolute', width: this.props.width, height: this.props.height*0.70, left: (screenW - this.props.width)/2, top: (screenH - this.props.height + 150)/2, backgroundColor: 'white', borderRadius: 10}}>
-                <Text style={{fontSize: 25, marginLeft: 20, marginTop: 15}}>Edit Meal</Text>
+                <Text style={{fontSize: 25, marginLeft: 20, marginTop: 15}}>Edit Activity</Text>
                 <Button buttonStyle={styles.XButton} textStyle={{fontSize: 25}} text={'✕'} onPress={() => this.handleClose()}/>
                 <View style={styles.textFields}>
                   <View style={styles.textEntry}>

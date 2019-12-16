@@ -2,6 +2,7 @@ import React from 'react'
 import { StackedAreaChart, XAxis, YAxis, Grid } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 import { View, Text, AsyncStorage, Dimensions } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default class WeekView extends React.PureComponent {
     constructor(props){
@@ -142,7 +143,7 @@ export default class WeekView extends React.PureComponent {
 
         return (
 
-           <View style={{backgroundColor: '#ecf0f1', height: screenHeight}}>
+           <ScrollView style={{backgroundColor: '#ecf0f1', height: screenHeight}}>
                <Text style={{fontSize: 40, marginTop: 60, marginBottom: 5, alignSelf: 'center'}}>Week View</Text>
                 <View style={{marginTop:150}}>
                     <Text style={{fontSize: 25, alignSelf: 'center'}}> Your Stats Over 7 Days </Text>
@@ -188,7 +189,7 @@ export default class WeekView extends React.PureComponent {
                     <Text style={{color: colors[4], fontWeight: 'bold'}}>calories (kcal)</Text>
 
                 </View>
-            </View>
+            </ScrollView>
         )
     }
 }

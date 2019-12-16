@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import ConfirmModal from './ConfirmModal';
 import Button from './Button';
+import {  ScrollView } from "react-native-gesture-handler";
 
 
 export default class Activities extends React.Component{
@@ -69,10 +70,10 @@ export default class Activities extends React.Component{
     render(){
         return(
             <View style={styles.container}>
-                <View style={styles.settings}>
+                <ScrollView style={styles.settings}>
                     <Button buttonStyle={styles.option} textStyle={{fontSize: 18}} text={'Delete my account'} onPress={()=>{this.showConfirmDelete()}}/>
                     <Button buttonStyle={styles.option} textStyle={{fontSize: 18}} text={'Sign out'} onPress={()=>{this.showConfirmSignout()}}/>
-                </View>
+                </ScrollView>
                 <ConfirmModal width={300} height={600} msg={'delete your account'} title={'Confirm Deletion'}  trig={()=>{this.sendReq()}} hide={()=>{this.hideConfirm()}} show={this.state.showDel}/>
                 <ConfirmModal width={300} height={600} msg={'sign out of your account'} title={'Confirm Logout'}  trig={()=>{this.signOut()}} hide={()=>{this.hideConfirm()}} show={this.state.showSignOut}/>
             </View>
@@ -97,9 +98,7 @@ const styles = StyleSheet.create({
         width: screenWidth,
         borderWidth: 1,
         borderColor: '#070707',
-        justifyContent: 'center',
-        marginTop: -1
-    },
+        justifyContent: 'center'},
     settings:{
         marginTop: 70,
         flex: 3

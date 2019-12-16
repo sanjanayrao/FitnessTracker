@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Button from './Button';
 import DatePicker from 'react-native-datepicker';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 export default class EditMeal extends React.Component{
@@ -89,9 +90,9 @@ export default class EditMeal extends React.Component{
 
           return (
               
-              <View style={styles.container}>
+              <ScrollView style={styles.container}>
                 <Text style={{fontSize: 40, alignSelf: 'center', justifyContent:'center', marginTop: 70, flex: 1}}>Edit Meal</Text>
-                <View style={styles.textFields}>
+                <View style={styles.textFields} >
                   <View style={styles.textEntry}>
                     <TextInput placeholder="Name, ex: 'breakfast'" textAlign={'center'} textStyle={{fontSize: 20}}  value={this.state.name} style={styles.textInput} onChangeText={(name) => this.setState({name})} />
                   </View>
@@ -146,30 +147,29 @@ export default class EditMeal extends React.Component{
                      <Button onPress={()=>{this.editMeal()}} textStyle={{color: 'white'}} buttonStyle={styles.update} text={'Next'}/>
                   </View>
                 </View>
-              </View>    
+              </ScrollView>    
           )
         }
       }
 
 
+const screenW = Math.round(Dimensions.get('window').width);
+const screenH = Math.round(Dimensions.get('window').height);
 
 const styles = StyleSheet.create({
   container:{
     backgroundColor: '#ecf0f1',
     flex: 1,
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignItems: 'center'
+    alignContent: 'center'
   },
   date: {
     margin: 30,
   },
   textFields:{
-    width: 300,
-    flex: 10,
+    width: screenW * 0.75,
+    height: screenH * 0.8,
     alignContent: 'center',
     marginBottom: 25,
-    justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor: '#ffffff'
     

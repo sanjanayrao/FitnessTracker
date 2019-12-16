@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Button from './Button';
 import DatePicker from 'react-native-datepicker';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 export default class AddMeal extends React.Component{
@@ -77,7 +78,7 @@ export default class AddMeal extends React.Component{
 
           return (
               
-              <View style={styles.container}>
+              <ScrollView style={styles.container}>
                 <Text style={{fontSize: 40, alignSelf: 'center', justifyContent:'center', marginTop: 70, flex: 1}}>Add Meal</Text>
                 <View style={styles.textFields}>
                   <View style={styles.textEntry}>
@@ -134,7 +135,7 @@ export default class AddMeal extends React.Component{
                      <Button onPress={()=>{this.addMeal()}} textStyle={{color: 'white'}} buttonStyle={styles.update} text={'Next'}/>
                   </View>
                 </View>
-              </View>    
+              </ScrollView>    
           )
         }
       }

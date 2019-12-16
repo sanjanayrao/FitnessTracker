@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import EditInfo from './EditInfo';
 import { DataTable } from 'react-native-paper';
+import { ScrollView } from "react-native-gesture-handler";
 
 
 
@@ -190,7 +191,7 @@ export default class Profile extends Component {
               <View accessible={true}>
               <Text style={styles.message}>{this.state.message}, {"\n"} {this.state.username}!</Text>
               </View>
-              <View style={styles.dataTable}>
+              <ScrollView style={styles.dataTable}>
                 <View accessible={true} >
                 <Text style={styles.dashTitle} >{this.getDashName()}</Text>
                 </View>
@@ -227,7 +228,7 @@ export default class Profile extends Component {
                 <View accessible={true}>
                 <Button style={styles.editButton} title={'edit goals'} onPress={()=>this.showEdit()}/>
                 </View>
-              </View>
+              </ScrollView>
 
 
             </View>
